@@ -1,12 +1,3 @@
-Vue.component('button-counter', {
-    data: function () {
-        return {
-            count: 0
-        }
-    },
-    template: '<button v-on:click="count++">Vous m\'avez cliqué {{ count }} fois.</button>'
-});
-
 Vue.component('custom-nav', {
     props: ['title'],
     template: `<nav class="navbar-default navbar-static-side" role="navigation">
@@ -31,36 +22,28 @@ Vue.component('custom-nav', {
                     IN+
                 </div>
             </li>
+            
             <li>
-                <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="index.html">Dashboard v.1</a></li>
-                    <li><a href="dashboard_2.html">Dashboard v.2</a></li>
-                    <li><a href="dashboard_3.html">Dashboard v.3</a></li>
-                    <li><a href="dashboard_4_1.html">Dashboard v.4</a></li>
-                    <li><a href="dashboard_5.html">Dashboard v.5 </a></li>
-                </ul>
+                <a href="chat_view.html"><i class="fa fa-envelope-o"></i><span>chat</span></a>
             </li>
+            
             <li>
-                <a href="#"><i class="fa fa-group"></i> <span class="nav-label">Groups</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="graph_flot.html">ajouter</a></li>
-                    <li><a href="graph_morris.html">lister</a></li>
-                </ul>
+                <a href="jq_grid.html"><i class="fa fa-group"></i> <span>Group</span></a>
+                
             </li>
             <li>
                 <a href="mailbox.html"><i class="fa fa-address-book"></i> <span class="nav-label">Compte </span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="mailbox.html">profile</a></li>
-                    <li><a href="mail_detail.html">Role</a></li>
-                    <li><a href="mail_compose.html">Utilisateur</a></li>
+                    <li><a href="contacts_2.html">profile</a></li>
+                    <li><a href="jq_grid.html">Role</a></li>
+                    <li><a href="jq_grid.html">Utilisateur</a></li>
                 </ul>
             </li>
             <li>
                 <a href="#"><i class="fa fa-file-archive-o"></i> <span class="nav-label">Annonces</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="form_basic.html">Créer une annonce</a></li>
-                    <li><a href="form_advanced.html">Voir annonces</a></li>
+                    <li><a href="form_editors.html">Créer une annonce</a></li>
+                    <li><a href="article.html">Voir annonces</a></li>
                 </ul>
             </li>
         </ul>
@@ -282,7 +265,7 @@ Vue.component('custom-top-menu', {
 
 
                     <li>
-                        <a href="login.html">
+                        <a href="index.html">
                             <i class="fa fa-sign-out"></i> Log out
                         </a>
                     </li>
