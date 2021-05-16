@@ -5,6 +5,8 @@
     <title>Title</title>
     <link rel="stylesheet" href="css/signin.css">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -18,10 +20,9 @@
                 <a href="#" class="social"><i class="fa fa-linkedin"></i></a>
             </div>
             <span>Utilisez vos identifiants pour vous connecter</span>
-            <input type="text" placeholder="Name" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <button>Creation compte</button>
+            <input type="text" placeholder="Name" class="form-control m-b" v-model="title" />
+            <textarea type="email" class="form-control m-b" rows="5" placeholder="Message" v-model="message"></textarea>
+            <button>Envoyer</button>
         </form>
     </div>
     <div class="form-container sign-in-container">
@@ -33,8 +34,8 @@
                 <a href="#" class="social"><i class="fa fa-linkedin"></i></a>
             </div>
             <span>Utilisez vos identifiants pour vous connecter</span>
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
+            <input type="email" placeholder="Email" v-model="email"/>
+            <input type="password" placeholder="Password" v-model="password" />
             <a href="#">Mot de passe oublié?</a>
             <button>Connexion</button>
         </form>
@@ -49,12 +50,25 @@
             <div class="overlay-panel overlay-right">
                 <h1>Salut l'ami!</h1>
                 <p>Si vous n'avez pas de compte, veillez cliquer sur le bouton ci-dessous pur faire une demande</p>
-                <button class="ghost" id="signUp">Creation compte</button>
+                <button class="ghost" id="signUp">Envoyer demande</button>
             </div>
         </div>
     </div>
 </div>
 
+<script src="js/vue.js"></script>
+
+<script>
+    var chat_view = new Vue({
+        el: '#container',
+        data: {
+            title: '',
+            message: '',
+            email: '',
+            password: '',
+        }
+    })
+</script>
 
 <script type="text/javascript">
     const signUpButton = document.getElementById('signUp');

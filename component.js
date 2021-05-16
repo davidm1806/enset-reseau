@@ -34,7 +34,7 @@ Vue.component('custom-nav', {
             <li>
                 <a href="mailbox.html"><i class="fa fa-address-book"></i> <span class="nav-label">Compte </span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="contacts_2.html">profile</a></li>
+                    <li><a href="contacts.html">profile</a></li>
                     <li><a href="jq_grid.html">Role</a></li>
                     <li><a href="jq_grid.html">Utilisateur</a></li>
                 </ul>
