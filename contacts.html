@@ -433,6 +433,12 @@
 
         var app = new Vue({
             el: '#wrapper',
+            beforeCreate: function() {
+                const token = isAuthenticate();
+                console.log(token);
+                if (!token)
+                    location.href = '/index.html';
+            },
             created: function() {
                 this.findGroupPromotion();
                 this.findContact();

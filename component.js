@@ -1,5 +1,18 @@
 Vue.component('custom-nav', {
     props: ['title'],
+    mounted: function() {
+        this.getAuthentication();
+    },
+    data: function() {
+        return {
+            user: {},
+        }
+    },
+    methods: {
+      getAuthentication : function () {
+          this.user = isAuthenticate();
+      }
+    },
     template: `<nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
@@ -8,8 +21,8 @@ Vue.component('custom-nav', {
                             <img alt="image" class="img-circle" src="img/inconnue/man.png" width="100" />
                              </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong>
-                             </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"> {{ user?.name }} : {{ user?.sub }} </strong>
+                             </span> <span class="text-muted text-xs block">ENSET<b class="caret"></b></span> </span> </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a href="profile.html">Profile</a></li>
                         <li><a href="contacts.html">Contacts</a></li>

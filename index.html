@@ -35,7 +35,7 @@
             </div>
             <span>Utilisez vos identifiants pour vous connecter</span>
             <span class="text-danger"> {{ errorMessage }} </span>
-            <input type="text" placeholder="Email" v-model="email" required/>
+            <input type="text" placeholder="Username" v-model="email" required/>
             <input type="password" placeholder="Password" v-model="password" required/>
             <button @click="login($event)">Connexion</button> <span class="text-info" v-show="showLodder">Chargement...</span>
         </form>
@@ -87,20 +87,25 @@
                     data: JSON.stringify(selft.infos),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
-                    success: function () {
+                    success: function (data, textStatus, request) {
                         selft.showLodder = false;
                         location.href = '/chat_view.html';
+                        const authorization = request.getResponseHeader('Authorization');
+                        document.cookie = `Authorization=${authorization}; path=/`;
+                        location.href = '/chat_view.html';
                     },
-                    error: function (data) {
-                        if (data.status == 200) {
+                    error: function (request, textStatus, errorThrown) {
+                        const authorization = request.getResponseHeader('Authorization');
+                        if (request.status == 200) {
+                            document.cookie = `Authorization=${authorization}; path=/`;
                             location.href = '/chat_view.html';
                         } else {
                             selft.showLodder = false;
                             selft.errorMessage = 'Le mot de passe ou l\'adresse email ne sont pas correspondant';
-                            console.log(data);
                         }
+
                     }
-                })
+                }).done()
             },
         }
     })
