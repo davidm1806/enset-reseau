@@ -35,13 +35,13 @@
 
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>Gestion des Groupes</h2>
+                    <h2>Gestion des utilisateurs</h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="jq_grid.html">Tchat</a>
                         </li>
                         <li class="active">
-                            <strong>Groupes</strong>
+                            <strong>Utilisateurs</strong>
                         </li>
                     </ol>
                 </div>
@@ -51,10 +51,10 @@
                 <div class="col-lg-12">
                     <div class="ibox ">
                         <div class="ibox-title">
-                            <h5>Listes des groupes enregistrées dans le système</h5>
+                            <h5>Listes des utilisateurs enregistrés dans le système</h5>
                         </div>
                         <div class="ibox-content" id="jq_table_data">
-                            <p>Dans cette section, vous pouvez ajouter, modifier, supprimer ou rechercher un groupe</p>
+                            <p>Dans cette section, vous pouvez ajouter ou modifier un compte utilisateur</p>
 
                             <div class="jqGrid_wrapper" id="wrapper_content_id">
                                 <table id="table_list_2"></table>
@@ -101,23 +101,25 @@
         var chat_view = new Vue({
             el: '#wrapper',
             data: {
-                groups: [],
-                currentGroup: null,
+                users: [],
+                currentUser: null,
+                page: 0,
+                size: 10,
             },
             created: function() {
-                this.findGroup(true);
+                this.findUser(true);
             },
             mounted: function () {
 
             },
             methods: {
-                findGroup: function (build) {
+                findUser: function (build) {
                     const self = this;
                     $.ajax({
-                        url: GROUP_FIND_ALL,
+                        url: `${UTILISATEUR_FIND_ALL__PAGEABLE__GET}page=${self.page}&size=${self.size}` ,
                         type: 'GET',
                         success: function(data) {
-                            self.groups = data;
+                            self.users = data.content;
                             if(build)
                                 self.buildTable();
                         },
@@ -132,17 +134,17 @@
 
                     $('#wrapper_content_id').html('<table id="table_list_2"></table> <div id="pager_list_2"></div>');
 
-                    this.findGroup(true);
+                    this.findUser(true);
 
                 },
 
-                removeGroup: function() {
+                removeRole: function() {
                     const selft  = this;
                     $.ajax({
-                        url: `${GROUP_DELETE_BY_ID__DELETE+selft.currentGroup?.id}`,
+                        url: `${GROUP_DELETE_BY_ID__DELETE+selft.currentUser?.id}`,
                         type: 'DELETE',
                         success: function () {
-                            self.findGroup(true);
+                            self.findUser(true);
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             console.log("Status: " + textStatus); console.log("Error: " + errorThrown);
@@ -155,33 +157,34 @@
 
                     // Configuration for jqGrid Example 2
                     $("#table_list_2").jqGrid({
-                        data: selft.groups,
+                        data: selft.users,
                         datatype: "local",
                         height: 300,
                         autowidth: true,
                         shrinkToFit: true,
                         rowNum: 20,
                         rowList: [10, 20, 30],
-                        colNames:['id','Name','Type Group','Description', 'Créé le', 'Modifié le'],
+                        colNames:['id','username','mot de passe','pseudo','Activé', 'Créé le', 'Modifié le'],
                         colModel:[
                             {name:'id',index:'id', editable: true, hidden: true},
-                            {name:'name',index:'name', editable: true, editrules:{required:true}},
-                            {name:'typeGroup',index:'name', editable: true, edittype: 'select', editoptions: { value: { 'ENSET': 'Niveau ENSET','DEPARTEMENT': 'Niveau Département','PROMOTION': 'Niveau Promotion','AUTRE': 'Autre (e.g : Ancien, Nouveau)',}}},
-                            {name:'description',index:'description', editable: true, edittype:"textarea", editoptions:{rows:"2"}},
-                            {name:'created_at',index:'created_at', editable: false, editoptions:{value:null},},
-                            {name:'updated_at',index:'updated_at',editable: false, editoptions:{value:null},},
+                            {name:'username',index:'username', editable: true, editrules:{required:true}},
+                            {name:'password',index:'password', editable: true, editoptions:{value:null},  edittype: 'password'},
+                            {name:'pseudo',index:'pseudo', editable: true},
+                            {name:'actived',index:'actived', editable: true, edittype:"checkbox", },
+                            {name:'createAt',index:'createAt', editable: false, editoptions:{value:null},},
+                            {name:'updateAt',index:'updateAt',editable: false, editoptions:{value:null},},
 
                         ],
 
                         onSelectRow:function() {
                             var rowId =$(this).jqGrid('getGridParam','selrow');
-                            selft.currentGroup = jQuery(this).getRowData(rowId);
-                            console.log(selft.currentGroup);
+                            selft.currentUser = jQuery(this).getRowData(rowId);
+                            console.log(selft.currentUser);
 
                         },
                         pager: "#pager_list_2",
                         viewrecords: true,
-                        caption: "Liste des groups",
+                        caption: "Liste des users",
                         add: true,
                         edit: true,
                         addtext: 'Add',
@@ -190,55 +193,48 @@
                     });
 
 
-
                     // Setup buttons
                     $("#table_list_2").jqGrid('navGrid', '#pager_list_2',
-                        {edit: true, add: true, del: true, search: true,},
+                        {edit: true, add: true, search: true,},
                         {
                             zIndex: 100,
-                            url: `${GROUP_SAVE}`,
+                            url: `${UTILISATEUR_SAVE__POST}`,
                             closeOnEscape: true,
                             closeAfterEdit: true,
                             recreateForm: true,
-                            caption: "Formulaire création groupe",
+                            caption: "Formulairemodification utilisateur",
 
                             afterComplete: function (response) {
                                 
                                 selft.refreshTable();
 
-
-                                /*$(this).jqGrid().setGridParam(
-                                    {
-                                        data: selft.groups,
-                                    }
-                                ).trigger("reloadGrid");*/
                             }
                         },
                         {
                             zIndex: 100,
-                            url: `${GROUP_SAVE}`,
+                            url: `${UTILISATEUR_SAVE__POST}`,
                             closeOnEscape: true,
                             closeAfterAdd: true,
-                            caption: "Formulaire édition groupe",
+                            caption: "Création utilisateur",
                             afterComplete: function (response) {
                                 selft.refreshTable();
                             }
                         },
-                        {
+                        /*{
                             zIndex: 100,
                             url: `${ACCEPT_ALL}`,
                             closeOnEscape: true,
                             closeAfterDelete: true,
                             recreateForm: true,
-                            msg: "Etes vous sûr de vouloir supprimer ce group ? ",
+                            msg: "Etes vous sûr de vouloir supprimer cette uti ? ",
                             onclickSubmit: function (response, postdata) {
                                 console.log('click');
-                                selft.removeGroup();
+                                selft.removeRole();
                             },
                             afterComplete: function (response) {
                                 selft.refreshTable();
                             }
-                        },
+                        },*/
                         {height: 200, reloadAfterSubmit: true}
                     );
 

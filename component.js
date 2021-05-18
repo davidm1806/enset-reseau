@@ -5,7 +5,7 @@ Vue.component('custom-nav', {
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="img/profile_small.jpg" />
+                            <img alt="image" class="img-circle" src="img/inconnue/man.png" width="100" />
                              </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong>
@@ -32,11 +32,11 @@ Vue.component('custom-nav', {
                 
             </li>
             <li>
-                <a href="mailbox.html"><i class="fa fa-address-book"></i> <span class="nav-label">Compte </span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">Compte </span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li><a href="contacts.html">profile</a></li>
-                    <li><a href="jq_grid.html">Role</a></li>
-                    <li><a href="jq_grid.html">Utilisateur</a></li>
+<!--                    <li><a href="role.html">Role</a></li>-->
+                    <li><a href="users.html">Utilisateur</a></li>
                 </ul>
             </li>
             <li>

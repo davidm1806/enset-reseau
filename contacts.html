@@ -11,8 +11,22 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
 
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet">
+
+    <link href="css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
 
 </head>
 
@@ -26,351 +40,285 @@
             <custom-top-menu></custom-top-menu>
 
             <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-9">
+                <div class="col-md-9">
                     <h2>Contacts</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="index.html">Home</a>
-                        </li>
-                        <li>
-                            App Views
+                            <a href="chat_view.html">Chat</a>
                         </li>
                         <li class="active">
                             <strong>Contacts</strong>
                         </li>
                     </ol>
+
+                    <!-- Modal edit or add -->
+
+                    <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated fadeIn">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title"><span v-if="account.id">Mise a jour du</span><span v-else>Création d'un  </span> compte</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <span id="global_erreur"></span>
+                                    <form id="form" action="#" class="wizard-big">
+                                        <h1>Account</h1>
+                                        <fieldset>
+                                            <h2>Account Information</h2>
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <div class="form-group">
+                                                        <label>Matricule *</label>
+                                                        <input id="username" name="userName" type="text" class="form-control required">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Password *</label>
+                                                        <input id="password" name="password" type="password" class="form-control required">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Confirm Password *</label>
+                                                        <input id="confirm" name="confirm" type="password" class="form-control required">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Pseudo</label>
+                                                        <input id="pseudo" name="pseudo" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="text-center">
+                                                        <div style="margin-top: 20px">
+                                                            <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </fieldset>
+                                        <h1>Profile</h1>
+                                        <fieldset>
+                                            <h2>Information sur le profil</h2>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Nom *</label>
+                                                        <input id="name" name="name" type="text" class="form-control required">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Prenom *</label>
+                                                        <input id="surname" name="surname" type="text" class="form-control required">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Email </label>
+                                                        <input id="email" name="email" type="text" class="form-control email">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Telephone </label>
+                                                        <input id="phone" name="phone" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">Sexe : </label>
+
+                                                        <div class="col-sm-10">
+                                                            <label class="checkbox-inline i-checks"> <input type="radio" checked value="Homme" name="sexe">  Homme </label>
+                                                            <label class="checkbox-inline i-checks"> <input type="radio" value="Femme" name="sexe">  Femme </label></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Status</label>
+                                                        <select name="status" id="status" class="form-control">
+                                                            <option value="NOUVEAU">Nouveau</option>
+                                                            <option value="ANCIEN">Ancien</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Promotion </label>
+                                                        <select name="promotion" id="promotion" class="form-control">
+                                                            <option v-for="p in groupPromotions" value="p.name"> {{ p.name }}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Date entrée </label>
+                                                        <input id="date_entre" name="date_entre" type="date" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Date diplomation </label>
+                                                        <input id="date_diplomation" name="date_diplomation" type="date" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                        <label>Address </label>
+                                                        <input id="address" name="address" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-3">
+                    <br/>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal4">
+                        <span class="fa fa-plus-circle"></span> Ajouter
+                    </button>
                 </div>
             </div>
         <div class="wrapper wrapper-content animated fadeInRight">
+
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-4" v-for="ac in accounts">
                 <div class="contact-box">
-                    <a href="profile.html">
                     <div class="col-sm-4">
                         <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a2.jpg">
-                            <div class="m-t-xs font-bold">Graphics designer</div>
+                            <a :href="'profile.html?id='+ac.id">
+                                <img v-if="ac.sexe=='Homme'" alt="image" class="img-circle m-t-xs img-responsive" src="img/inconnue/man.png">
+                                <img v-else alt="image" class="img-circle m-t-xs img-responsive" src="img/inconnue/girl.jpg">
+                            </a>
+                            <div class="m-t-xs font-bold"> {{ ac.status }}</div>
                         </div>
                     </div>
                     <div class="col-sm-8">
-                        <h3><strong>John Smith</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
+                        <h3><strong> {{ ac.first_name + ' ' + ac.last_name}}</strong></h3>
+                        <p><i class="fa fa-map-marker"></i> {{ ac.address }} </p>
                         <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a1.jpg">
-                            <div class="m-t-xs font-bold">CEO</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Alex Johnatan</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a3.jpg">
-                            <div class="m-t-xs font-bold">Marketing manager</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Monica Smith</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a4.jpg">
-                            <div class="m-t-xs font-bold">Sales manager</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Michael Zimber</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a5.jpg">
-                            <div class="m-t-xs font-bold">Graphics designer</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Sandra Smith</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a6.jpg">
-                            <div class="m-t-xs font-bold">Graphics designer</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Janet Carton</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a1.jpg">
-                            <div class="m-t-xs font-bold">CEO</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Alex Johnatan</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a2.jpg">
-                            <div class="m-t-xs font-bold">Graphics designer</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>John Smith</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a3.jpg">
-                            <div class="m-t-xs font-bold">Marketing manager</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Monica Smith</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a4.jpg">
-                            <div class="m-t-xs font-bold">Sales manager</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Michael Zimber</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a5.jpg">
-                            <div class="m-t-xs font-bold">Graphics designer</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Sandra Smith</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a6.jpg">
-                            <div class="m-t-xs font-bold">Graphics designer</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Janet Carton</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                        </a>
+                            <strong>ENSET {{ ac.filiere?.departement?.name }} {{ ac.filiere?.name }} </strong><br>
+                             Entrée : {{ ac.dateEntree }}<br>
+                             Sortie : {{ ac.dateDiplomation }}<br>
+                            <abbr title="Phone">P:</abbr> {{ac.phone}}
+                            <abbr title="Email">E:</abbr> {{ac.email}}
 
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a1.jpg">
-                            <div class="m-t-xs font-bold">CEO</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>Alex Johnatan</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
+                            <div class="border-top m-t-md">
+                                <div class="m-t-xs btn-group">
+                                    <a class="btn btn-xs btn-white"><i class="fa fa-envelope"></i> Email</a>
+                                    <a class="btn btn-xs btn-white"><i class="fa fa-user-plus"></i> Follow</a>
+                                    <a class="btn btn-xs btn-white" @click="updateAccount(ac)"><i class="fa fa-edit"></i> Modifier</a>
+                                </div>
+                            </div>
+
                         </address>
                     </div>
                     <div class="clearfix"></div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="contact-box">
-                    <a href="profile.html">
-                    <div class="col-sm-4">
-                        <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a2.jpg">
-                            <div class="m-t-xs font-bold">Graphics designer</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h3><strong>John Smith</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
-                        <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> (123) 456-7890
-                        </address>
-                    </div>
-                    <div class="clearfix"></div>
-                    </a>
                 </div>
             </div>
         </div>
         </div>
 
-            <custom-footer/>
+        <custom-footer/>
 
+        </div>
+
+
+        <div class="modal inmodal" id="myModal0" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated fadeIn">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Mise a jour du compte</h4>
+                    </div>
+                    <div class="modal-body">
+                        <span id="global_erreur0"></span>
+                        <form id="form0">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Nom *</label>
+                                        <input id="name0" name="name" type="text" class="form-control required" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Prenom *</label>
+                                        <input id="surname0" name="surname" type="text" class="form-control required" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Email </label>
+                                        <input id="email0" name="email" type="text" class="form-control email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Telephone </label>
+                                        <input id="phone0" name="phone" type="text" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <select name="status" id="status0" class="form-control">
+                                            <option value="NOUVEAU">Nouveau</option>
+                                            <option value="ANCIEN">Ancien</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Promotion </label>
+                                        <select name="promotion" id="promotion0" class="form-control">
+                                            <option v-for="p in groupPromotions" value="p.name"> {{ p.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Date entrée </label>
+                                        <input id="date_entre0" name="date_entre" type="date" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Date diplomation </label>
+                                        <input id="date_diplomation0" name="date_diplomation" type="date" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 m-b-md">
+                                    <div class="row form-group">
+                                        <label class="col-sm-2 control-label">Sexe : </label>
+
+                                        <div class="col-sm-10">
+                                            <label class="checkbox-inline i-checks"> <input id="homme_chezckbox" type="radio" value="Homme" name="sexe0">  Homme </label>
+                                            <label class="checkbox-inline i-checks"> <input id="femme_checkbox" type="radio" value="Femme" name="sexe0">  Femme </label></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Address </label>
+                                        <input id="address0" name="address" type="text" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <div class="col-lg-12">
+                                        <button class="btn btn-primary" @click="saveAccount($event)"><i class="fa fa-save"></i> Enregistrer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -384,12 +332,297 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- Steps -->
+    <script src="js/plugins/steps/jquery.steps.min.js"></script>
+
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+    <!-- Toastr script -->
+    <script src="js/plugins/toastr/toastr.min.js"></script>
+
     <script src="js/vue.js"></script>
     <script src="component.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/toast_config.js"></script>
 
     <script>
-        var chat_view = new Vue({
-            el: '#wrapper'
+
+        $(document).ready(function(){
+
+            $("#form").steps({
+                bodyTag: "fieldset",
+                onStepChanging: function (event, currentIndex, newIndex)
+                {
+                    // Always allow going backward even if the current step contains invalid fields!
+                    if (currentIndex > newIndex)
+                    {
+                        return true;
+                    }
+
+                    // Forbid suppressing "Warning" step if the user is to young
+                    if (newIndex === 3 && Number($("#age").val()) < 18)
+                    {
+                        return false;
+                    }
+
+                    var form = $(this);
+
+                    // Clean up if user went backward before
+                    if (currentIndex < newIndex)
+                    {
+                        // To remove error styles
+                        $(".body:eq(" + newIndex + ") label.error", form).remove();
+                        $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                    }
+
+                    // Disable validation on fields that are disabled or hidden.
+                    form.validate().settings.ignore = ":disabled,:hidden";
+
+                    // Start validation; Prevent going forward if false
+                    return form.valid();
+                },
+                onStepChanged: function (event, currentIndex, priorIndex)
+                {
+                    // Suppress (skip) "Warning" step if the user is old enough.
+                    if (currentIndex === 2 && Number($("#age").val()) >= 18)
+                    {
+                        $(this).steps("next");
+                    }
+
+                    // Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
+                    if (currentIndex === 2 && priorIndex === 3)
+                    {
+                        $(this).steps("previous");
+                    }
+                },
+                onFinishing: function (event, currentIndex)
+                {
+                    var form = $(this);
+
+                    // Disable validation on fields that are disabled.
+                    // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
+                    form.validate().settings.ignore = ":disabled";
+
+                    // Start validation; Prevent form submission if false
+                    return form.valid();
+                },
+                onFinished: function (event, currentIndex)
+                {
+
+                    app.saveAccount();
+                    // Submit form input
+
+                }
+            }).validate({
+                errorPlacement: function (error, element)
+                {
+                    element.before(error);
+                },
+                rules: {
+                    confirm: {
+                        equalTo: "#password"
+                    }
+                }
+            });
+
+
+
+        });
+
+
+        var app = new Vue({
+            el: '#wrapper',
+            created: function() {
+                this.findGroupPromotion();
+                this.findContact();
+            },
+            mounted: function() {
+
+            },
+            data: {
+                account : {
+                    id: null,
+                    first_name: null,
+                    last_name: null,
+                    email: null,
+                    phone: null,
+                    address: null,
+                    status: null,
+                    isActive: null,
+                    dateEntree: null,
+                    dateDiplomation: null,
+                    showPrivateProfile: null,
+                    photoProfile: null,
+                    hasPhotoProfile: null,
+                    promotion: null,
+                    showPrivateInfo: false,
+                    filiereId: null,
+                    sexe: null,
+                    utilisateur: {
+                        username: '',
+                        password: '',
+                        passwordConfirm: '',
+                        pseudo: '',
+                    }
+                },
+
+                page: 0,
+                size: 10,
+                totalElement: 0,
+                filieres : [],
+                groupPromotions: [],
+                accounts: []
+
+
+            },
+            methods: {
+                findGroupPromotion: function () {
+                    const selft = this;
+                    $.ajax({
+                        url: `${GROUP_FIND_BY_TYPE + GROUP_TYPE.DEPARTEMENT}`,
+                        type: 'GET',
+                        success: function (data) {
+                            selft.groupPromotions = data;
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    });
+                },
+                
+                findFiliere: function () {
+                    const selft = this;
+                    $.ajax({
+                        url: `${'filiere_path'}`,
+                        type: 'GET',
+                        success: function (data) {
+                            console.log(data);
+                            selft.filieres = data.response;
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    })
+                },
+                
+                findContact: function () {
+                    const selft = this;
+                    $.ajax({
+                        url: `${ACCOUNT_FIND_ALL}page=${selft.page}&size=${selft.size}`,
+                        type: 'GET',
+                        success: function (data) {
+                            selft.accounts = data.content;
+                            console.log(data.content);
+                            selft.totalElement = data.totalElements
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    });
+                },
+
+                saveAccount: function (e) {
+                    if(e) e.preventDefault();
+
+                    const username = $("#username");
+                    const password = $("#password");
+                    const confirm = $("#confirm");
+                    const pseudo = $("#pseudo");
+                    const name = $("#name");
+                    const surname = $("#surname");
+                    const email = $("#eamil");
+                    const phone = $("#phone");
+                    const status = $("select[name='status");
+                    const promotion = $("select[name='promotion");
+                    const date_entre = $("#date_entre");
+                    const date_diplomation = $("#date_diplomation");
+                    const address = $("#address");
+
+                    const selft = this;
+                    const global_error = $('#global_erreur');
+
+                    global_error.val('');
+
+                    if (!this.account.id) {
+                        this.account.utilisateur.username = username.val();
+                        this.account.utilisateur.password = password.val();
+                        this.account.utilisateur.passwordConfirm = confirm.val();
+                        this.account.utilisateur.pseudo = pseudo.val();
+
+                        this.account.first_name = name.val();
+                        this.account.last_name = surname.val();
+                        this.account.email = email.val();
+                        this.account.phone = phone.val();
+                        this.account.promotion = promotion.val();
+                        this.account.dateEntree = date_entre.val();
+                        this.account.dateDiplomation = date_diplomation.val();
+                        this.account.address = address.val();
+                        this.account.status = status.val();
+                        this.account.sexe = $("input[name='sexe']:checked").val();
+                    } else {
+                        this.account.first_name = $("#name0").val();
+                        this.account.last_name = $("#surname0").val();
+                        this.account.email = $("#eamil0").val();
+                        this.account.phone =  $("#phone0").val();
+                        this.account.promotion = $("#promotion0").val();
+                        this.account.dateEntree = $("#date_entre0").val();
+                        this.account.dateDiplomation = $("#date_diplomation0").val();
+                        this.account.address = $("#address0").val();
+                        this.account.status = $("#status0").val();
+                        this.account.sexe = $("input[name='sexe0']:checked").val();
+                    }
+
+
+                    $.ajax({
+                        url: `${ACCOUNT_SAVE}`,
+                        type: 'POST',
+                        data: JSON.stringify(selft.account),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            console.log(data);
+                            selft.findContact();
+                            toastr['success']("Les informations sur le commpte ont été enregistré avec succès");
+
+                            if(!selft.account.id)
+                                $('#myModal4').modal('hide');
+                            else
+                                $('#myModal0').modal('hide');
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            if(data.status == 409) {
+                                global_error.val('Ce compte exite déjé. Veillez changer votre username');
+                                toastr['error']("Ce compte exite déjé. Veillez changer votre username");
+                            }
+                            else
+                                toastr['error']("Une erreur est survenue lors de l'enregistrement. Veillez réessayer plus tard");
+                        }
+                    });
+                },
+
+                updateAccount: function (ac) {
+                    this.account.id = ac.id;
+                    $("#name0").val(ac.first_name);
+                    $("#surname0").val(ac.last_name);
+                    $("#eamil0").val(ac.email);
+                    $("#phone0").val(ac.phone);
+                    $("#status0").val(ac.status);
+                    $("#promotion0").val(ac.promotion);
+                    $("#date_entre0").val(ac.dateEntree);
+                    $("#date_diplomation0").val(ac.dateDiplomation);
+                    $("#address0").val(ac.address);
+
+                    if(ac.sexe == 'Homme')
+                        $('#homme_chezckbox').attr('checked', 'true');
+                    else
+                        $('#femme_checkbox').attr('checked','true');
+
+
+                    $('#myModal0').modal('show')
+                }
+            }
         })
     </script>
 

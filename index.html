@@ -26,7 +26,7 @@
         </form>
     </div>
     <div class="form-container sign-in-container">
-        <form action="chat_view.html">
+        <form action="#">
             <h1>Connexion</h1>
             <div class="social-container">
                 <a href="#" class="social"><i class="fa fa-facebook-f"></i></a>
@@ -34,10 +34,10 @@
                 <a href="#" class="social"><i class="fa fa-linkedin"></i></a>
             </div>
             <span>Utilisez vos identifiants pour vous connecter</span>
-            <input type="email" placeholder="Email" v-model="email"/>
-            <input type="password" placeholder="Password" v-model="password" />
-            <a href="#">Mot de passe oublié?</a>
-            <button>Connexion</button>
+            <span class="text-danger"> {{ errorMessage }} </span>
+            <input type="text" placeholder="Email" v-model="email" required/>
+            <input type="password" placeholder="Password" v-model="password" required/>
+            <button @click="login($event)">Connexion</button> <span class="text-info" v-show="showLodder">Chargement...</span>
         </form>
     </div>
     <div class="overlay-container">
@@ -55,8 +55,11 @@
         </div>
     </div>
 </div>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/bootstrap.js"></script>
 
 <script src="js/vue.js"></script>
+<script src="js/config.js"></script>
 
 <script>
     var chat_view = new Vue({
@@ -66,6 +69,39 @@
             message: '',
             email: '',
             password: '',
+            showLodder: false,
+            errorMessage: '',
+            infos : {}
+        },
+        methods: {
+            login: function(e) {
+                e.preventDefault();
+                const selft = this;
+                selft.showLodder = true;
+                selft.errorMessage = '';
+                selft.infos.username = selft.email;
+                selft.infos.password = selft.password;
+                $.ajax({
+                    url: `${LOGIN}`,
+                    type: 'POST',
+                    data: JSON.stringify(selft.infos),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+                        selft.showLodder = false;
+                        location.href = '/chat_view.html';
+                    },
+                    error: function (data) {
+                        if (data.status == 200) {
+                            location.href = '/chat_view.html';
+                        } else {
+                            selft.showLodder = false;
+                            selft.errorMessage = 'Le mot de passe ou l\'adresse email ne sont pas correspondant';
+                            console.log(data);
+                        }
+                    }
+                })
+            },
         }
     })
 </script>
