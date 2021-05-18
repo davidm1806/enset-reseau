@@ -61,7 +61,12 @@ function parseJwt (token) {
     }).join(''));
 
     return JSON.parse(jsonPayload);
-};
+}
+
+function logout() {
+    document.cookie = `Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    location.href='/index.html';
+}
 
 function getCookie2(cname) {
     var name = cname + "=";

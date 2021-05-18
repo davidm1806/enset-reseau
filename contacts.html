@@ -341,9 +341,9 @@
     <!-- Toastr script -->
     <script src="js/plugins/toastr/toastr.min.js"></script>
 
+    <script src="js/config.js"></script>
     <script src="js/vue.js"></script>
     <script src="component.js"></script>
-    <script src="js/config.js"></script>
     <script src="js/toast_config.js"></script>
 
     <script>
@@ -435,7 +435,6 @@
             el: '#wrapper',
             beforeCreate: function() {
                 const token = isAuthenticate();
-                console.log(token);
                 if (!token)
                     location.href = '/index.html';
             },

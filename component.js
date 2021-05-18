@@ -9,9 +9,9 @@ Vue.component('custom-nav', {
         }
     },
     methods: {
-      getAuthentication : function () {
-          this.user = isAuthenticate();
-      }
+          getAuthentication : function () {
+              this.user = isAuthenticate();
+          },
     },
     template: `<nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
@@ -166,6 +166,11 @@ Vue.component('custom-small-chat', {
 
 
 Vue.component('custom-top-menu', {
+    methods: {
+        logout: function () {
+            logout();
+        }
+    },
     template: `<div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
@@ -278,7 +283,7 @@ Vue.component('custom-top-menu', {
 
 
                     <li>
-                        <a href="index.html">
+                        <a href="javascript:void()" @click="logout()">
                             <i class="fa fa-sign-out"></i> Log out
                         </a>
                     </li>
