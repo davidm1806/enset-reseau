@@ -1,5 +1,5 @@
-//const BASE_URL = 'http://localhost:8018';
-const BASE_URL = 'http://88.198.209.182:8080/rencontre-enset';
+const BASE_URL = 'http://localhost:8018';
+//const BASE_URL = 'http://88.198.209.182:8080/rencontre-enset';
 
 const API_URL = BASE_URL+'/api/v1.0';
 
@@ -12,6 +12,7 @@ const GROUP_SAVE = API_URL+'/account_controller/group/save';
 const GROUP_FIND_ALL = API_URL+'/account_controller/group/find_all';
 const GROUP_DELETE_BY_ID__DELETE = API_URL+'/account_controller/group/delete/';
 const GROUP_FIND_BY_TYPE = API_URL+'/account_controller/group/find_by_type/';
+const GROUP_FIND_BY_ACCOUNT__GET = API_URL+'/account_controller/group/find_by_account_id/';
 
 const LOGIN = BASE_URL+'/login';
 
@@ -37,6 +38,7 @@ const GROUP_TYPE = {
     PROMOTION: 'PROMOTION',
     AUTRE: 'AUTRE',
 };
+
 
 
 function getCookie(name) {
@@ -65,7 +67,7 @@ function parseJwt (token) {
 
 function logout() {
     document.cookie = `Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    location.href='/index.html';
+    location.href='index.html';
 }
 
 function getCookie2(cname) {
@@ -83,3 +85,14 @@ function getCookie2(cname) {
     }
     return "";
 }
+
+function isAdmin(roles) {
+    if(!roles)
+        return;
+
+    return roles.indexOf('ADMIN') > -1;
+}
+
+
+
+

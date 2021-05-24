@@ -1,64 +1,100 @@
 Vue.component('custom-nav', {
     props: ['title'],
+    created: function() {
+      this.findGroupByAccount()
+    },
     mounted: function() {
         this.getAuthentication();
     },
     data: function() {
         return {
             user: {},
+            groups: [],
         }
     },
     methods: {
           getAuthentication : function () {
               this.user = isAuthenticate();
           },
+            findGroupByAccount: function () {
+                this.getAuthentication();
+                if(!this.user)
+                    return;
+                const selft = this;
+                $.ajax({
+                    url: `${GROUP_FIND_BY_ACCOUNT__GET+selft.user.id}`,
+                    type: 'GET',
+                    success: function (data) {
+                        selft.groups = data;
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
     },
     template: `<nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
-                <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="img/inconnue/man.png" width="100" />
-                             </span>
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"> {{ user?.name }} : {{ user?.sub }} </strong>
-                             </span> <span class="text-muted text-xs block">ENSET<b class="caret"></b></span> </span> </a>
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="profile.html">Profile</a></li>
-                        <li><a href="contacts.html">Contacts</a></li>
-                        <li><a href="mailbox.html">Mailbox</a></li>
-                        <li class="divider"></li>
-                        <li><a href="login.html">Logout</a></li>
-                    </ul>
+                <div class="dropdown profile-element">
+                    <a :href="'profile.html?id='+user.id">
+                        <img alt="image" class="img-circle" src="img/inconnue/man.png" width="100" />
+                    </a>
+                    <br/>
+                    <br/>
+                    <span>
+                        <a href="#"><i class="fa fa-file-archive-o"></i><strong class="font-bold"> {{ user?.name }} : {{ user?.sub }} </strong></a>
+                    </span>
                 </div>
                 <div class="logo-element">
                     IN+
                 </div>
             </li>
             
-            <li>
-                <a href="chat_view.html"><i class="fa fa-envelope-o"></i><span>chat</span></a>
-            </li>
+            <template v-if="isAdmin(user.roles)">
             
-            <li>
-                <a href="jq_grid.html"><i class="fa fa-group"></i> <span>Group</span></a>
+                <li>
+                    <a href="chat_view.html"><i class="fa fa-envelope-o"></i><span>chat</span></a>
+                </li>
                 
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">Compte </span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="contacts.html">profile</a></li>
-<!--                    <li><a href="role.html">Role</a></li>-->
-                    <li><a href="users.html">Utilisateur</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-file-archive-o"></i> <span class="nav-label">Annonces</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="form_editors.html">Créer une annonce</a></li>
-                    <li><a href="article.html">Voir annonces</a></li>
-                </ul>
-            </li>
+                <li>
+                    <a href="jq_grid.html"><i class="fa fa-group"></i> <span>Group</span></a>
+                    
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-address-book"></i> <span class="nav-label">Compte </span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="contacts.html">profile</a></li>
+                        <li><a href="users.html">Utilisateur</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-file-archive-o"></i> <span class="nav-label">Annonces</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="form_editors.html">Créer une annonce</a></li>
+                        <li><a href="article.html">Voir annonces</a></li>
+                    </ul>
+                </li>
+            </template>
+            
+            <template v-else>
+                
+                <template v-if="groups.length > 0">
+                    <li v-for="g in groups">
+                        <a :href="'chat_view.html?groupId='+g.id"><i class="fa fa-file-archive-o"></i> <span class="nav-label">{{ g.name }}</span></a>
+                       
+                    </li>
+                </template> 
+              
+                
+                <li v-else>
+                    <a href="#"><i class="fa fa-file-archive-o"></i> <span class="nav-label">Aucun group trouvé</span></a>
+                   
+                </li>
+                
+            </template>
+           
         </ul>
 
     </div>
@@ -166,24 +202,36 @@ Vue.component('custom-small-chat', {
 
 
 Vue.component('custom-top-menu', {
+    mounted: function() {
+        this.animatedTitle();
+    } ,
     methods: {
         logout: function () {
             logout();
+        },
+        animatedTitle: function () {
+            phrase1 = "BIENVENU SUR LA PLATEFORME DE RENCONTRE DE L'ENSET DE DOUALA";
+            phrase2 = "";
+            rythme = 25;
+            pause = 20000;
+            longueur = 150;
+            pos1 = 1;
+            pos2 = longueur;
+            timer = setTimeout("textetapee()",rythme);
         }
     },
     template: `<div class="row border-bottom">
-            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <nav class="navbar navbar-static-top text-center" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
                     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-                    <form role="search" class="navbar-form-custom" action="search_results.html">
-                        <div class="form-group">
-                            <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
-                        </div>
-                    </form>
+                    
                 </div>
+                    <span class="text-muted welcome-message" id="welcome-message" style="font-size: 20px; margin-top: 15px; font-weight: bold"></span>
+                    <span class="m-r-sm text-muted h6 welcome-message" id="welcome2-message"></span>
+            
+              
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <span class="m-r-sm text-muted welcome-message">Bienvenu sur le chat de ENSET de Douala</span>
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -291,4 +339,31 @@ Vue.component('custom-top-menu', {
 
             </nav>
         </div>`
-})
+});
+
+
+
+
+
+function textetapee () {
+    var sujet1 = phrase1.substring (0,pos1);
+    var sujet2 = phrase2.substring (0,pos1);
+    for (var i=1;i<pos2;i++) sujet1 += " " ;
+    sujet1 += phrase1.charAt(pos1);
+    sujet2 += phrase2.charAt(pos1);
+    document.getElementById('welcome-message').innerHTML = sujet1;
+    document.getElementById('welcome2-message').innerHTML = sujet2;
+    if (pos2 <= 1) {
+        pos1++;
+        if (phrase1.charAt(pos1) == " ") pos1++ ;
+        pos2 = longueur-pos1
+    } else {
+        if (pos2 >  30) pos2 *= .065 ;
+        else pos2--;
+    }
+    if (pos1 != phrase1.length) timer = setTimeout("textetapee()",rythme);
+    else {
+        pos1 = 0;
+        pos2 = longueur;
+        timer = setTimeout("textetapee()",pause);
+    }}

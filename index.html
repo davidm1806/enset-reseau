@@ -89,10 +89,10 @@
                     contentType: "application/json; charset=utf-8",
                     success: function (data, textStatus, request) {
                         selft.showLodder = false;
-                        location.href = '/chat_view.html';
+                        location.href = 'chat_view.html?id=1';
                         const authorization = request.getResponseHeader('Authorization');
                         document.cookie = `Authorization=${authorization}; path=/`;
-                        location.href = '/chat_view.html';
+                        location.href = 'chat_view.html?id=1';
                     },
                     error: function (request, textStatus, errorThrown) {
                         const authorization = request.getResponseHeader('Authorization');

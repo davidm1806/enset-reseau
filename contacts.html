@@ -191,7 +191,7 @@
                 <div class="contact-box">
                     <div class="col-sm-4">
                         <div class="text-center">
-                            <a :href="'profile.html?id='+ac.id">
+                            <a :href="'profile.html?id='+ac.utilisateur?.id">
                                 <img v-if="ac.sexe=='Homme'" alt="image" class="img-circle m-t-xs img-responsive" src="img/inconnue/man.png">
                                 <img v-else alt="image" class="img-circle m-t-xs img-responsive" src="img/inconnue/girl.jpg">
                             </a>
@@ -436,7 +436,7 @@
             beforeCreate: function() {
                 const token = isAuthenticate();
                 if (!token)
-                    location.href = '/index.html';
+                    location.href = 'index.html';
             },
             created: function() {
                 this.findGroupPromotion();
