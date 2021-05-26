@@ -95,7 +95,7 @@
                         if(!isAdmin(isAuthenticate()?.roles))
                             location.href = 'chat_view.html?id=1';
                         else
-                            location.href = 'contact.html';
+                            location.href = 'contacts.html';
                     },
                     error: function (request, textStatus, errorThrown) {
                         const authorization = request.getResponseHeader('Authorization');
@@ -104,7 +104,7 @@
                             if(!isAdmin(isAuthenticate()?.roles))
                                 location.href = 'chat_view.html?id=1';
                             else
-                                location.href = 'contact.html';
+                                location.href = 'contacts.html';
                         } else {
                             selft.showLodder = false;
                             selft.errorMessage = 'Le mot de passe ou l\'adresse email ne sont pas correspondant';
