@@ -65,7 +65,7 @@
                                     <div class="chat-discussion">
 
                                         <div class="chat-message" :class="{'left': m.userId != user.id, 'right': m.userId == user.id}" v-for="m in messages">
-                                            <img v-if="m.sexe=='Homme'" alt="image" class="chat-avatar" src="img/inconnue/man.png">
+                                            <img v-if="m.sexe=='Homme'" alt="" class="chat-avatar" src="img/inconnue/man.png">
                                             <img v-else alt="image" class="chat-avatar" src="img/inconnue/girl.jpg">
                                             <div class="message">
                                                 <a class="message-author" href="#"> {{ m.firstName }} {{ m.lastName }}</a>
@@ -289,7 +289,7 @@
                     },
                     contentType: "application/json; charset=utf-8",
                     success: function (data, textStatus, request) {
-                        selft.currentMessage = data;
+                        selft.currentMessage = {};
 
                     },
                     error: function(error) {
