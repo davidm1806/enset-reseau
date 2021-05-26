@@ -54,9 +54,9 @@ Vue.component('custom-nav', {
             
             <template v-if="isAdmin(user.roles)">
             
-                <li>
+               <!-- <li>
                     <a href="chat_view.html"><i class="fa fa-envelope-o"></i><span>chat</span></a>
-                </li>
+                </li>-->
                 
                 <li>
                     <a href="jq_grid.html"><i class="fa fa-group"></i> <span>Group</span></a>
