@@ -82,14 +82,14 @@ Vue.component('custom-nav', {
                 
                 <template v-if="groups.length > 0">
                     <li v-for="g in groups">
-                        <a :href="'chat_view.html?groupId='+g.id"><i class="fa fa-file-archive-o"></i> <span class="nav-label">{{ g.name }}</span></a>
+                        <a :href="'chat_view.html?id='+g.id"><i class="fa fa-file-archive-o"></i> <span class="nav-label">{{ g.name }}</span></a>
                        
                     </li>
                 </template> 
               
                 
                 <li v-else>
-                    <a href="#"><i class="fa fa-file-archive-o"></i> <span class="nav-label">Aucun group trouvé</span></a>
+                    <span class="nav-label">Aucun group trouvé</span>
                    
                 </li>
                 

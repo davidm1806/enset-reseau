@@ -37,7 +37,7 @@
                         <a>Miscellaneous</a>
                     </li>
                     <li class="active">
-                        <strong>Chat view</strong>
+                        <strong> {{ currentGroup?.name}}</strong>
                     </li>
                 </ol>
             </div>
@@ -54,11 +54,9 @@
                     <div class="ibox chat-view">
 
                         <div class="ibox-title">
-                            <small class="pull-right text-muted">Dernier message:  Lun Jan 26 2015 - 18:39:23</small>
-                            Panneau de la salle de chat
+                            <small class="pull-right text-muted">Dernier message:  {{ messages[0]?.send_at }}</small>
+                            Bienvenue dans le group <span class="font-bold text-uppercase"> {{ currentGroup?.name }}</span>
                         </div>
-
-
                         <div class="ibox-content">
 
                             <div class="row">
@@ -66,55 +64,21 @@
                                 <div class="col-md-9 ">
                                     <div class="chat-discussion">
 
-                                        <div class="chat-message left">
-                                            <img class="message-avatar" src="img/inconnue/man.png" alt="" width="50">
+                                        <div class="chat-message" :class="{'left': m.userId != user.id, 'right': m.userId == user.id}" v-for="m in messages">
+                                            <img v-if="m.sexe=='Homme'" alt="image" class="chat-avatar" src="img/inconnue/man.png">
+                                            <img v-else alt="image" class="chat-avatar" src="img/inconnue/girl.jpg">
                                             <div class="message">
-                                                <a class="message-author" href="#"> Michael Smith </a>
-                                                <span class="message-date"> Mon Jan 26 2015 - 18:39:23 </span>
+                                                <a class="message-author" href="#"> {{ m.firstName }} {{ m.lastName }}</a>
+                                                <span class="message-date"> {{ m.send_at }} </span>
                                                 <span class="message-content">
-                                                    Salut anna comment tu va?
-                                                    </span>
-                                            </div>
-                                        </div>
-                                        <div class="chat-message left">
-                                            <img class="message-avatar" src="img/inconnue/man.png" alt="" width="50">
-                                            <div class="message">
-                                                <a class="message-author" href="#"> Kingué rapha </a>
-                                                <span class="message-date"> Mon Jan 26 2015 - 18:39:23 </span>
-                                                <span class="message-content">
-                                                    Le prof de math est venu aujourd'hui?
+                                                    {{ m.content }}
                                                     </span>
                                             </div>
                                         </div>
 
-                                        <div class="chat-message left">
-                                            <img class="message-avatar" src="img/inconnue/girl.jpg" alt="" width="50">
-                                            <div class="message">
-                                                <a class="message-author" href="#"> Ebong raïssa </a>
-                                                <span class="message-date"> Mon Jan 26 2020 - 18:39:23 </span>
-                                                <span class="message-content">
-                                                    Oui le prof est venu. On a fait le cours d'algèbre chapitre 2 les espaces vectoriels. Tout le monde était la sauf toi.
-                                                    </span>
-                                            </div>
-                                        </div>
-                                        <div class="chat-message right">
-                                            <img class="message-avatar" src="img/inconnue/inconnu-small.jpg" alt="" >
-                                            <div class="message">
-                                                <a class="message-author" href="#"> Moi </a>
-                                                <span class="message-date">  Fri Jan 25 2015 - 11:12:36 </span>
-                                                <span class="message-content"> Bonjour tout le monde </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="chat-message left">
-                                            <img class="message-avatar" src="img/inconnue/man.png" alt="" width="50">
-                                            <div class="message">
-                                                <a class="message-author" href="#"> Ebong raïssa </a>
-                                                <span class="message-date"> Mon Jan 26 2020 - 18:39:23 </span>
-                                                <span class="message-content">
-                                                    Samedi j'organise un truc a la maison pour la matère. ca vous dis?
-                                                    </span>
-                                            </div>
+                                        <div class="alert alert-info border-0" v-if="messages?.length == 0">
+                                            Aucun message envoyé dans ce groupe. <br/>
+                                            Démarrer un discussion
                                         </div>
 
                                     </div>
@@ -125,32 +89,6 @@
 
 
                                         <div class="users-list">
-                                            <div class="chat-user">
-                                                <img class="chat-avatar" src="img/inconnue/man.png" alt="" >
-                                                <div class="chat-user-name">
-                                                    <a href="#">Karl Jordan</a>
-                                                </div>
-                                            </div>
-                                            <div class="chat-user">
-                                                <img class="chat-avatar" src="img/inconnue/girl.jpg" alt="" >
-                                                <div class="chat-user-name">
-                                                    <a href="#">Monica Smith</a>
-                                                </div>
-                                            </div>
-                                            <div class="chat-user">
-                                                <span class="pull-right label label-primary">Online</span>
-                                                <img class="chat-avatar" src="img/inconnue/man.png" alt="" >
-                                                <div class="chat-user-name">
-                                                    <a href="#">Michael Smith</a>
-                                                </div>
-                                            </div>
-                                            <div class="chat-user">
-                                                <span class="pull-right label label-primary">Online</span>
-                                                <img class="chat-avatar" src="img/inconnue/girl.jpg" alt="" >
-                                                <div class="chat-user-name">
-                                                    <a href="#">Janet Smith</a>
-                                                </div>
-                                            </div>
                                             <div class="chat-user">
                                                 <img class="chat-avatar" src="img/inconnue/girl.jpg" alt="" >
                                                 <div class="chat-user-name">
@@ -185,16 +123,17 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-11">
                                     <div class="chat-message-form">
 
                                         <div class="form-group">
 
-                                            <textarea class="form-control message-input" name="message" placeholder="Enter message text"></textarea>
+                                            <textarea class="form-control message-input" name="message" placeholder="Enter message text" v-model="currentMessage.content"></textarea>
                                         </div>
 
                                     </div>
                                 </div>
+                                <div class="col-lg-1"><button class="btn btn-outline btn-success" @click="sendMessage()">Go</button></div>
                             </div>
 
 
@@ -231,17 +170,156 @@
 <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 <script src="js/config.js"></script>
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script src="js/vue.js"></script>
 <script src="component.js"></script>
 
+
 <script>
+    // Enable pusher logging - don't include this in production
+   // Pusher.logToConsole = true;
+
+
+
+
     var chat_view = new Vue({
         el: '#wrapper',
         beforeCreate: function() {
             const token = isAuthenticate();
             if (!token)
-                location.href = '/index.html';
+                location.href = 'index.html';
         },
+        created: function() {
+            this.groupId = this.getCurrentGroupId();
+
+            this.findMessages();
+
+            this.getCurrentGroup();
+        },
+        mounted: function () {
+            this.initPussher();
+            this.user = isAuthenticate();
+        },
+        data: {
+            messages: [],
+            pusher: {},
+            user: {},
+            groupId: '',
+            token : 'cms_nord_cm ' + getCookie('Authorization'),
+            currentMessage: {
+                content: '',
+                account: null,
+                group: null,
+            },
+            currentGroup: {},
+        },
+        methods: {
+            getCurrentGroupId: function() {
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                return urlParams.get('id');
+            },
+
+            getCurrentGroup: function() {
+                const selft = this;
+                $.ajax({
+                    url: `${GROUP_GET_ONE__GET + selft.groupId}`,
+                    type: 'GET',
+                    header: {
+                        'Authorization': selft.token,
+                    },
+                    success: function (data) {
+                        selft.currentGroup = data;
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            },
+
+            initPussher: function() {
+                const selft = this;
+                this.pusher = new Pusher('cb5bd431f8fd80ec1f63', {
+                    cluster: 'eu'
+                });
+
+                var channel = selft.pusher.subscribe(CHANNEL_NAME.CHANEL_TCHAT_1);
+                channel.bind(PUSHER_EVENT.SEND_MESSAGE, function(data) {
+                    console.log(data);
+                    selft.refreshMessage(data);
+                });
+            },
+
+            getToken: function() {
+                return 'cms_nord_cm '+ isAuthenticate();
+            },
+
+            findMessages: function () {
+                const selft = this;
+                $.ajax({
+                    url: `${MESSAGE_FIND_BY_GROUP__PAGEABLE__GET + selft.groupId}?page=0&size=500`,
+                    type: 'GET',
+                    header: {
+                        'Authorization': selft.token,
+                    },
+                    success: function (data) {
+                        selft.messages = data.content;
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            },
+
+            sendMessage: function () {
+                const selft = this;
+
+                selft.currentMessage.sensBy = null;
+                selft.currentMessage.group = null;
+                selft.currentMessage.groupId = this.groupId;
+
+                $.ajax({
+                    url: `${MESSAGE_SAVE__POST}`,
+                    type: 'POST',
+                    data: JSON.stringify(selft.currentMessage),
+                    dataType: "json",
+                    headers: {
+                        'Authorization': selft.token,
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data, textStatus, request) {
+                        selft.currentMessage = data;
+
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                })
+
+
+            },
+            refreshMessage: function (id) {
+                const selft = this;
+                $.ajax({
+                    url: `${MESSAGE_GET_ONE__GET+ id}`,
+                    type: 'GET',
+                    header: {
+                        'Authorization': selft.token,
+                    },
+                    success: function (data) {
+                        console.log(selft.currentGroup);
+                        console.log(selft.currentGroup);
+                        if(data.groupId == selft.currentGroup.id) {
+                           selft.messages.push(data);
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
+        }
     })
 </script>
 

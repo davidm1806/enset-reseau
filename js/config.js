@@ -13,6 +13,7 @@ const GROUP_FIND_ALL = API_URL+'/account_controller/group/find_all';
 const GROUP_DELETE_BY_ID__DELETE = API_URL+'/account_controller/group/delete/';
 const GROUP_FIND_BY_TYPE = API_URL+'/account_controller/group/find_by_type/';
 const GROUP_FIND_BY_ACCOUNT__GET = API_URL+'/account_controller/group/find_by_account_id/';
+const GROUP_GET_ONE__GET = API_URL+'/account_controller/group/getOne/';
 
 const LOGIN = BASE_URL+'/login';
 
@@ -31,6 +32,15 @@ const AUTHORIZATION_FIND_ALL__GET = API_URL + '/user_controller/authorisation_fi
 
 
 
+/*======================= MESSAGE ================================*/
+const MESSAGE_FIND_BY_GROUP__PAGEABLE__GET = API_URL + '/account_controller/message/find_by_group/';
+const MESSAGE_DELETE__DELETE = API_URL + '/account_controller/message/delete';
+const MESSAGE_SAVE__POST = API_URL + '/account_controller/message/save';
+const MESSAGE_GET_ONE__GET = API_URL + '/account_controller/message/get_message_by_id/';
+
+
+
+
 
 const GROUP_TYPE = {
     ENSET: 'ENSET',
@@ -39,7 +49,14 @@ const GROUP_TYPE = {
     AUTRE: 'AUTRE',
 };
 
+const CHANNEL_NAME = {
+    CHANEL_TCHAT_1: 'enset_2020'
+}
 
+const PUSHER_EVENT = {
+    SEND_MESSAGE: 'send_message',
+    DELETE_MESSAGE: 'delete_messge',
+}
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;

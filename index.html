@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="css/signin.css">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-
 </head>
 <body>
 
@@ -62,6 +61,7 @@
 <script src="js/config.js"></script>
 
 <script>
+
     var chat_view = new Vue({
         el: '#container',
         data: {
@@ -92,13 +92,19 @@
                         location.href = 'chat_view.html?id=1';
                         const authorization = request.getResponseHeader('Authorization');
                         document.cookie = `Authorization=${authorization}; path=/`;
-                        location.href = 'chat_view.html?id=1';
+                        if(!isAdmin(isAuthenticate()?.roles))
+                            location.href = 'chat_view.html?id=1';
+                        else
+                            location.href = 'contact.html';
                     },
                     error: function (request, textStatus, errorThrown) {
                         const authorization = request.getResponseHeader('Authorization');
                         if (request.status == 200) {
                             document.cookie = `Authorization=${authorization}; path=/`;
-                            location.href = '/chat_view.html';
+                            if(!isAdmin(isAuthenticate()?.roles))
+                                location.href = 'chat_view.html?id=1';
+                            else
+                                location.href = 'contact.html';
                         } else {
                             selft.showLodder = false;
                             selft.errorMessage = 'Le mot de passe ou l\'adresse email ne sont pas correspondant';
