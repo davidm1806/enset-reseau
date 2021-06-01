@@ -13,6 +13,8 @@
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/plugins/jQueryUI/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
     <link href="css/plugins/jqGrid/ui.jqgrid.css" rel="stylesheet">
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
     <link href="css/style.css" rel="stylesheet">
 
     <style>
@@ -46,7 +48,7 @@
                     </ol>
                 </div>
             </div>
-        <div class="wrapper wrapper-content  animated fadeInRight">
+            <div class="wrapper wrapper-content  animated fadeInRight">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ibox ">
@@ -60,17 +62,49 @@
                                 <table id="table_list_2"></table>
                                 <div id="pager_list_2"></div>
                             </div>
+
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
 
 
+            <div class="container border-top">
+                <span class="text-danger" id="global_erreur0"></span>
+                <div class="row">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="form-group">
+                            <label>Matricule</label>
+                            <input v-model="studentMatricule" name="name" placeholder="entrer le matricule de l'étudiant" type="text" class="form-control required" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6">
+                        <div class="form-group">
+                            <label>Groupe</label>
+                            <select name="status" id="status0" class="form-control" v-model="selectGroup">
+                                <option :value="g.id" v-for="g in groups"> {{ g.name }} </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <br>
+                            <button class="btn btn-success mr-2" @click="addStudentInGroup()"><i class="fa fa-plus-circle"></i> Ajouter</button>
+                            <button class="btn btn-danger" @click="removeStudentInGroup()"><i class="fa fa-minus-circle"></i> Retirer</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
             <custom-footer/>
 
         </div>
-        </div>
+    </div>
 
 
 
@@ -93,6 +127,9 @@
 
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
+    <script src="js/plugins/toastr/toastr.min.js"></script>
+
+
     <script src="js/config.js"></script>
     <script src="js/vue.js"></script>
     <script src="component.js"></script>
@@ -104,11 +141,13 @@
                 const token = isAuthenticate();
                 console.log(token);
                 if (!token)
-                    location.href = '/index.html';
+                    location.href = 'index.html';
             },
             data: {
                 groups: [],
                 currentGroup: null,
+                studentMatricule: null,
+                selectGroup: null,
             },
             created: function() {
                 this.findGroup(true);
@@ -117,6 +156,54 @@
 
             },
             methods: {
+                addStudentInGroup: function() {
+                    const self = this;
+                    const errorElement = $('#global_erreur0');
+                    errorElement.text('');
+                    if(!self.studentMatricule || !self.selectGroup) {
+                        errorElement.text('Veillez remplir tous les champs');
+                        return;
+                    }
+                    $.ajax({
+                        url: `${ACCOUNT_ADD_ACCOUNT_TO_GROUP+self.studentMatricule+'/'+self.selectGroup}`,
+                        type: 'GET',
+                        success: function() {
+                            toastr['success']("L'étudaint vient d'être ajouté au group");
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            console.log("Error: " , errorThrown);
+
+                            if(errorThrown.status == 422)
+                                toastr['error']("l'étudiant ou le group associé n'a pas été trouvé");
+                            else
+                                toastr['error']("Une erreur est survenu lors de l'ajout");
+                        }
+                    })
+                },
+                removeStudentInGroup: function() {
+                    const self = this;
+                    const errorElement = $('#global_erreur0');
+                    errorElement.text('');
+                    if(!self.studentMatricule || !self.selectGroup) {
+                        errorElement.text('Veillez remplir tous les champs');
+                        return;
+                    }
+                    $.ajax({
+                        url: `${ACCOUNT_REMOVE_ACCOUNT_TO_GROUP+self.studentMatricule+'/'+self.selectGroup}`,
+                        type: 'GET',
+                        success: function() {
+                            toastr['success']("L'étudaint a été rétiré du group avec succès");
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+                            if(errorThrown.status == 422)
+                                toastr['error']("l'étudiant ou le group associé n'a pas été trouvé");
+                            else
+                                toastr['error']("Une erreur est survenu lors du retrait de l'étudiant");
+                        }
+                    })
+                },
+
                 findGroup: function (build) {
                     const self = this;
                     $.ajax({
@@ -163,7 +250,7 @@
                     $("#table_list_2").jqGrid({
                         data: selft.groups,
                         datatype: "local",
-                        height: 300,
+                        height: 250,
                         autowidth: true,
                         shrinkToFit: true,
                         rowNum: 20,

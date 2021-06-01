@@ -210,7 +210,7 @@ Vue.component('custom-top-menu', {
             logout();
         },
         animatedTitle: function () {
-            phrase1 = "BIENVENU SUR LA PLATEFORME DE RENCONTRE DE L'ENSET DE DOUALA";
+            phrase1 = "ENSET DE DOUALA";
             phrase2 = "";
             rythme = 25;
             pause = 20000;
