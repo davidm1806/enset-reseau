@@ -27,7 +27,8 @@
         <custom-top-menu></custom-top-menu>
 
         <div class="row wrapper border-bottom white-bg page-heading">
-            <div class="col-lg-10">
+
+            <div class="col-lg-9 col-md-8 col-sm-7">
                 <h2>Chat view</h2>
                 <ol class="breadcrumb">
                     <li>
@@ -41,8 +42,9 @@
                     </li>
                 </ol>
             </div>
-            <div class="col-lg-2">
 
+            <div class="col-lg-3 col-md-4 col-sm-5 m-t-sm">
+                <span class="h3">AJ-GINFO</span>
             </div>
         </div>
 
@@ -55,7 +57,7 @@
 
                         <div class="ibox-title">
                             <small class="pull-right text-muted">Dernier message:  {{ messages[0]?.send_at }}</small>
-                            Bienvenue dans le group <span class="font-bold text-uppercase"> {{ currentGroup?.name }}</span>
+                            <span class="h3">Vous êtes dans le group <span class="font-bold text-uppercase"> {{ currentGroup?.name }}</span> </span>
                         </div>
                         <div class="ibox-content">
 
@@ -84,42 +86,6 @@
                                     </div>
 
                                 </div>
-                                <!--<div class="col-md-3">
-                                    <div class="chat-users">
-
-
-                                        <div class="users-list">
-                                            <div class="chat-user">
-                                                <img class="chat-avatar" src="img/inconnue/girl.jpg" alt="" >
-                                                <div class="chat-user-name">
-                                                    <a href="#">Alice Smith</a>
-                                                </div>
-                                            </div>
-                                            <div class="chat-user">
-                                                <img class="chat-avatar" src="img/inconnue/girl.jpg" alt="" >
-                                                <div class="chat-user-name">
-                                                    <a href="#">Monica Cale</a>
-                                                </div>
-                                            </div>
-                                            <div class="chat-user">
-                                                <img class="chat-avatar" src="img/inconnue/man.png" alt="" >
-                                                <div class="chat-user-name">
-                                                    <a href="#">Mark Jordan</a>
-                                                </div>
-                                            </div>
-                                            <div class="chat-user">
-                                                <span class="pull-right label label-primary">Online</span>
-                                                <img class="chat-avatar" src="img/inconnue/man.png" alt="" >
-                                                <div class="chat-user-name">
-                                                    <a href="#">Janet Smith</a>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-
-                                    </div>
-                                </div>-->
 
                             </div>
                             <div class="row">
@@ -230,7 +196,6 @@
                     },
                     success: function (data) {
                         selft.currentGroup = data;
-                        console.log(data);
                     },
                     error: function (data) {
                         console.log(data);

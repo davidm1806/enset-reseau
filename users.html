@@ -34,7 +34,8 @@
             <custom-top-menu></custom-top-menu>
 
             <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-10">
+
+                <div class="col-lg-9 col-md-8 col-sm-7">
                     <h2>Gestion des utilisateurs</h2>
                     <ol class="breadcrumb">
                         <li>
@@ -44,6 +45,10 @@
                             <strong>Utilisateurs</strong>
                         </li>
                     </ol>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-5 m-t-sm">
+                    <span class="h3">AJ-GINFO</span>
                 </div>
             </div>
         <div class="wrapper wrapper-content  animated fadeInRight">
@@ -57,7 +62,7 @@
                             <p>Dans cette section, vous pouvez ajouter ou modifier un compte utilisateur</p>
 
                             <div class="jqGrid_wrapper" id="wrapper_content_id">
-                                <table id="table_list_2"></table>
+                                <table id="table_list_2" style="min-width: 100%"></table>
                                 <div id="pager_list_2"></div>
                             </div>
                         </div>
@@ -137,7 +142,7 @@
                 refreshTable: function() {
                     $("#wrapper_content_id").empty();
 
-                    $('#wrapper_content_id').html('<table id="table_list_2"></table> <div id="pager_list_2"></div>');
+                    $('#wrapper_content_id').html('<table id="table_list_2" style="min-width: 100%"></table> <div id="pager_list_2"></div>');
 
                     this.findUser(true);
 

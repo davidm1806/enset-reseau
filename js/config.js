@@ -1,5 +1,5 @@
-//const BASE_URL = 'http://localhost:8018';
-const BASE_URL = 'http://88.198.209.182:8080/rencontre-enset';
+const BASE_URL = 'http://localhost:8018';
+//const BASE_URL = 'http://88.198.209.182:8080/rencontre-enset';
 
 const API_URL = BASE_URL+'/api/v1.0';
 
