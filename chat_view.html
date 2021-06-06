@@ -113,12 +113,15 @@
 
 
                                                         <div class="users-list">
-                                                            <div class="chat-user" v-for="m in currentGroup.membres">
-                                                                <span class="pull-right label label-primary">Online</span>
+                                                            <div class="chat-user" v-for="m in currentGroup?.membres">
+                                                                <span class="pull-right">
+                                                                    <span class="label label-primary m-r-sm"> Ami(s) {{ m.frendNumber}}</span>
+                                                                    <span class="label label-success"> Group(s) {{ m.groupNumber}}</span>
+                                                                </span>
                                                                 <img v-if="m.sexe=='Homme'" alt="" class="chat-avatar" src="img/inconnue/man.png">
                                                                 <img v-else alt="image" class="chat-avatar" src="img/inconnue/girl.jpg">
                                                                 <div class="chat-user-name">
-                                                                    <span>{{ m.firstName }} {{ m.lastName }}</span>
+                                                                    <span>{{ m.first_name }} {{ m.last_name }}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
