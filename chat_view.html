@@ -62,46 +62,78 @@
                         <div class="ibox-content">
 
                             <div class="row">
-
                                 <div class="col-12">
-                                    <div class="chat-discussion">
+                                    <div class="tabs-container">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a data-toggle="tab" href="#tab-1"> Messages</a></li>
+                                            <li class=""><a data-toggle="tab" href="#tab-2">Membre du groupe</a></li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div id="tab-1" class="tab-pane active">
+                                                <div class="panel-body">
+                                                    <div class="chat-discussion">
 
-                                        <div class="chat-message" :class="{'left': m.userId != user.id, 'right': m.userId == user.id}" v-for="m in messages">
-                                            <img v-if="m.sexe=='Homme'" alt="" class="chat-avatar" src="img/inconnue/man.png">
-                                            <img v-else alt="image" class="chat-avatar" src="img/inconnue/girl.jpg">
-                                            <div class="message">
-                                                <a class="message-author" href="#"> {{ m.firstName }} {{ m.lastName }}</a>
-                                                <span class="message-date"> {{ m.send_at }} </span>
-                                                <span class="message-content">
+                                                        <div class="chat-message" :class="{'left': m.userId != user.id, 'right': m.userId == user.id}" v-for="m in messages">
+                                                            <img v-if="m.sexe=='Homme'" alt="" class="chat-avatar" src="img/inconnue/man.png">
+                                                            <img v-else alt="image" class="chat-avatar" src="img/inconnue/girl.jpg">
+                                                            <div class="message">
+                                                                <a class="message-author" href="#"> {{ m.firstName }} {{ m.lastName }}</a>
+                                                                <span class="message-date"> {{ m.send_at }} </span>
+                                                                <span class="message-content">
                                                     {{ m.content }}
                                                     </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="alert alert-info border-0" v-if="messages?.length == 0">
+                                                            Aucun message envoyé dans ce groupe. <br/>
+                                                            Démarrer un discussion
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row mt-2">
+                                                        <div class="col-lg-11 col-10">
+                                                            <div class="chat-message-form">
+
+                                                                <div class="form-group">
+
+                                                                    <textarea class="form-control message-input" name="message" placeholder="Enter message text" v-model="currentMessage.content"></textarea>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-1 col-2"><button class="btn btn-outline btn-success" @click="sendMessage()">Go</button></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="tab-2" class="tab-pane">
+                                                <div class="panel-body">
+                                                    <div class="chat-users">
+
+
+                                                        <div class="users-list">
+                                                            <div class="chat-user" v-for="m in currentGroup.membres">
+                                                                <span class="pull-right label label-primary">Online</span>
+                                                                <img v-if="m.sexe=='Homme'" alt="" class="chat-avatar" src="img/inconnue/man.png">
+                                                                <img v-else alt="image" class="chat-avatar" src="img/inconnue/girl.jpg">
+                                                                <div class="chat-user-name">
+                                                                    <span>{{ m.firstName }} {{ m.lastName }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="alert alert-info border-0" v-if="messages?.length == 0">
-                                            Aucun message envoyé dans ce groupe. <br/>
-                                            Démarrer un discussion
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-11 col-10">
-                                    <div class="chat-message-form">
-
-                                        <div class="form-group">
-
-                                            <textarea class="form-control message-input" name="message" placeholder="Enter message text" v-model="currentMessage.content"></textarea>
-                                        </div>
 
                                     </div>
                                 </div>
-                                <div class="col-lg-1 col-2"><button class="btn btn-outline btn-success" @click="sendMessage()">Go</button></div>
-                            </div>
 
+                            </div>
 
                         </div>
 
